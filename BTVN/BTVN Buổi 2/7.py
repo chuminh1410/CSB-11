@@ -13,6 +13,7 @@ t.forward(100)
 t.left(100)
 t.forward(100)
 t.left(40)
+
 t.penup()
 t.forward(30)
 t.pendown()

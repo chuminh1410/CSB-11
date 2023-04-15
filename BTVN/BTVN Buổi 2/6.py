@@ -26,5 +26,3 @@ t.left(90)
 t.forward(85)
 t.right(135)
 t.forward(80)
-
-turtle.done()
