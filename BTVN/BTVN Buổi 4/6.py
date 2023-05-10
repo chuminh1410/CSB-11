@@ -1,4 +1,4 @@
-import turtle
+import turtle as t 
 
 edges = int(input("Input number of edges: "))
 
@@ -7,11 +7,11 @@ if edges < 3:
 
 angle = 360 / edges
 
-window = turtle.Screen()
-turtle.speed(1)
+window = t.Screen()
+t.speed(1)
 
 for i in range(edges):
-    turtle.forward(100)
-    turtle.right(angle)
+    t.forward(100)
+    t.right(angle)
 
-turtle.done()
+t.done()
