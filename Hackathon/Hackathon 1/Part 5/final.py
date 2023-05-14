@@ -24,7 +24,7 @@ game_over = False
 while not game_over:
     question, correct_answer, incorrect_answer  = generate_question()
     random_ans = random.choice([correct_answer,incorrect_answer])
-    print(question, random_ans )
+    print(question, "=", random_ans )
     answer = int(input("1 for True, 0 for False: "))
     if answer == 1 and random_ans == correct_answer :
         score += 1
