@@ -1,12 +1,13 @@
 import random
 
 def generate_question():
-    num1 = random.randint(1, 20)
-    num2 = random.randint(1, 20)
+    num1 = random.randint(1, 50)
+    num2 = random.randint(1, 50)
+    num_random = random.randint(1, 50)
     operator = random.choice(['+', '-', '*', '/'])
     operator_incor = random.choice(['+', '-'])
     question = f"{num1} {operator} {num2}"
-    incorrect_answer = f"{eval(question)} {operator} {num1}"
+    incorrect_answer = f"{eval(question)} {operator} {num_random}"
     correct_answer = eval(question)
     if operator == '/':
         while num1 % num2 != 0:
