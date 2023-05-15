@@ -1,4 +1,5 @@
 import random
+import time 
 
 def generate_question():
     num1 = random.randint(1, 50)
@@ -28,6 +29,13 @@ def main_game():
         random_ans = random.choice([correct_answer,incorrect_answer])
         print(question, "=", random_ans )
         answer = int(input("1 for True, 0 for False: "))
+        time = 30
+        while time != 0:
+            print("You have ", time, "seconds left")
+            time.sleep(1)
+            time = time - 1
+        
+            
         if answer == 1 and random_ans == correct_answer :
             score += 1
             print("Score:", score)
