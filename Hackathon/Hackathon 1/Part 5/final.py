@@ -1,5 +1,6 @@
 import random
 import time 
+import asyncio
 
 def generate_question():
     num1 = random.randint(1, 50)
@@ -18,6 +19,12 @@ def generate_question():
             correct_answer = eval(question)
     return question, correct_answer, eval(incorrect_answer)
 
+async def timer():
+    clock = 30
+    while clock != 0:
+        print("You have ", clock, "seconds left")
+        time.sleep(1)
+        clock = clock - 1
 
 def main_game():
     print("== FREAKING MATH CONSOLE ==")
@@ -28,12 +35,9 @@ def main_game():
         question, correct_answer, incorrect_answer  = generate_question()
         random_ans = random.choice([correct_answer,incorrect_answer])
         print(question, "=", random_ans )
+        timer()
         answer = int(input("1 for True, 0 for False: "))
-        time = 30
-        while time != 0:
-            print("You have ", time, "seconds left")
-            time.sleep(1)
-            time = time - 1
+        
         
             
         if answer == 1 and random_ans == correct_answer :
