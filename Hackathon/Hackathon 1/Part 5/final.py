@@ -1,6 +1,5 @@
 import random
 import time 
-import asyncio
 
 def generate_question():
     num1 = random.randint(1, 50)
@@ -19,7 +18,7 @@ def generate_question():
             correct_answer = eval(question)
     return question, correct_answer, eval(incorrect_answer)
 
-async def timer():
+def timer():
     clock = 30
     while clock != 0:
         print("You have ", clock, "seconds left")
