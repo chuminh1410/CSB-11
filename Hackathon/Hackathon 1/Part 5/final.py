@@ -1,5 +1,6 @@
 import random
 import time 
+from threading import Timer
 
 def generate_question():
     num1 = random.randint(1, 50)
@@ -18,12 +19,6 @@ def generate_question():
             correct_answer = eval(question)
     return question, correct_answer, eval(incorrect_answer)
 
-def timer():
-    clock = 30
-    while clock != 0:
-        print("You have ", clock, "seconds left")
-        time.sleep(1)
-        clock = clock - 1
 
 def main_game():
     print("== FREAKING MATH CONSOLE ==")
@@ -34,7 +29,14 @@ def main_game():
         question, correct_answer, incorrect_answer  = generate_question()
         random_ans = random.choice([correct_answer,incorrect_answer])
         print(question, "=", random_ans )
-        timer()
+        
+        timeout = 10
+        t = (timeout, print, ['Sorry, times up'])
+        t.start()
+        prompt = "You have %d seconds to choose the correct answer...\n" % timeout
+        answer = input(prompt)
+        t.cancel()
+        
         answer = int(input("1 for True, 0 for False: "))
         
         
