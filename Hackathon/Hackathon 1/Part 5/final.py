@@ -1,10 +1,11 @@
 import random
-import time 
+import time
+import asyncio
 
 timer = 30
 harder = 5
 
-def clock():
+async def clock():
     global timer 
     timer -= 1 
     if timer != 0:
@@ -42,7 +43,7 @@ def main_game():
         random_ans = random.choice([correct_answer,incorrect_answer])
         print(question, "=", random_ans )
         
-        clock()
+        await clock()
         answer = int(input("1 for True, 0 for False: "))
         
         
