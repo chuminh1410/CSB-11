@@ -1,17 +1,11 @@
 import random
-import time
-import asyncio
+from threading import Timer
 
-timer = 30
+game_over = False
+score = 0
+timer = 10
 harder = 5
 
-async def clock():
-    global timer 
-    timer -= 1 
-    if timer != 0:
-        print("You have", timer, "seconds left")
-        timer = timer - 1
-        time.sleep(1)
 
 def generate_question():
     global harder
@@ -32,26 +26,34 @@ def generate_question():
             correct_answer = eval(question)
     return question, correct_answer, eval(incorrect_answer)
 
+def times_up():
+    global game_over
+    game_over = True
+
+    print("Times up!!!. Press any key to quit.")
 
 def main_game():
+    global game_over
+    global score
+
     print("== FREAKING MATH CONSOLE ==")
     print("Give correct answers to get scores.")
-    score = 0
-    game_over = False
+
     while not game_over:
         question, correct_answer, incorrect_answer  = generate_question()
         random_ans = random.choice([correct_answer,incorrect_answer])
         print(question, "=", random_ans )
         
-        clock()
-        answer = int(input("1 for True, 0 for False: "))
-        
-        
+        t = Timer(timer, times_up)
+        t.start()
+        prompt = "1 for True, 0 for False. You have %d seconds to choose the correct answer...\n" % timer
+        answer = input(prompt)
+        t.cancel()
             
-        if answer == 1 and random_ans == correct_answer :
+        if answer == "1" and random_ans == correct_answer:
             score += 1
             print("Score:", score)
-        elif answer == 0 and random_ans != correct_answer:
+        elif answer == "0" and random_ans != correct_answer:
             score += 1
             print("Score:", score)
         else:
