@@ -43,7 +43,7 @@ def main_game():
         random_ans = random.choice([correct_answer,incorrect_answer])
         print(question, "=", random_ans )
         
-        await clock()
+        clock()
         answer = int(input("1 for True, 0 for False: "))
         
         
