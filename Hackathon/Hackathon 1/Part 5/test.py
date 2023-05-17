@@ -1,6 +1,7 @@
-from termcolor import colored
+array =[ [1,2,],
+        [4,5,],
+        [6,7]]
 
-user_input = input(colored("HELLO", "red"))
-#Where string is the prompt for the input command and color
-#is a valid termcolor color
-print(colored(user_input,"blue"))
+i = 2
+for i in range (1,i):
+    print(array(1,i))
