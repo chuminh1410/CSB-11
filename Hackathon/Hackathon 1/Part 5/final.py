@@ -1,11 +1,42 @@
 import random
-from threading import Timer
+import select
+import sys
+from termcolor import colored 
 
 game_over = False
 score = 0
 timer = 10
 harder = 5
+random_color = ""
 
+class TimeoutException(Exception):
+    pass
+
+def signal_handler(signum, frame):
+    raise TimeoutException("Time is up!")
+
+def timeout_input(prompt, timeout):
+    for i in range(timeout, 0, -1):
+        if select.select([sys.stdin], [], [], 1)[0]:
+            user_input = input()
+            break
+        sys.stdout.write(f"\r{prompt} (timeout in {i} seconds): ")
+        sys.stdout.flush()
+    else:
+        print()
+        user_input = None
+
+    return user_input
+
+def color():
+    global random_color
+    color_text = ["black","red","green","yellow","blue",
+                  "magenta","cyan","white","light_grey",
+                  "dark_grey","light_red","light_green",
+                  "light_yellow","light_blue","light_magenta","light_cyan"]
+    random_color = random.choice(color_text)
+    
+    
 
 def generate_question():
     global harder
@@ -26,29 +57,20 @@ def generate_question():
             correct_answer = eval(question)
     return question, correct_answer, eval(incorrect_answer)
 
-def times_up():
-    global game_over
-    game_over = True
-
-    print("Times up!!!. Press any key to quit.")
-
 def main_game():
     global game_over
     global score
-
     print("== FREAKING MATH CONSOLE ==")
     print("Give correct answers to get scores.")
 
     while not game_over:
+        color()
         question, correct_answer, incorrect_answer  = generate_question()
         random_ans = random.choice([correct_answer,incorrect_answer])
-        print(question, "=", random_ans )
+        print_question = print(question, "=", random_ans )
+        print(colored(print_question, random_color))
         
-        t = Timer(timer, times_up)
-        t.start()
-        prompt = "1 for True, 0 for False. You have %d seconds to choose the correct answer...\n" % timer
-        answer = input(prompt)
-        t.cancel()
+        answer = timeout_input("1 for True, 0 for False", timer)
             
         if answer == "1" and random_ans == correct_answer:
             score += 1
