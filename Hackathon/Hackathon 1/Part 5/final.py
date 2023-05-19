@@ -67,7 +67,7 @@ def main_game():
         color()
         question, correct_answer, incorrect_answer  = generate_question()
         random_ans = random.choice([correct_answer,incorrect_answer])
-        print_question = print(question, "=", random_ans )
+        print_question = f"{question} = {random_ans}"
         print(colored(print_question, random_color))
         
         answer = timeout_input("1 for True, 0 for False", timer)
