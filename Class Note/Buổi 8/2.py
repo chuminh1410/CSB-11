@@ -1,4 +1,4 @@
-def is_prime(number):
+def iprime(number):
     if number <= 1:
         return False
     for i in range(2, int(number**0.5) + 1):
@@ -8,7 +8,7 @@ def is_prime(number):
 
 num = int(input("Enter a number: "))
 
-if is_prime(num):
+if iprime(num):
     print(num, "is a prime number.")
 else:
     print(num, "is not a prime number.")

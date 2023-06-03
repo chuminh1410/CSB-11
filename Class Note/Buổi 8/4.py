@@ -11,5 +11,5 @@ def count_upper_lower(string):
 text = input("Enter a string: ")
 upper, lower = count_upper_lower(text)
 
-print("Uppercase letters:", upper)
-print("Lowercase letters:", lower)
+print("Num of uppercase letters:", upper)
+print("Num of lowercase letters:", lower)
