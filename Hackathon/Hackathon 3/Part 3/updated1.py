@@ -1,6 +1,7 @@
 import os
 import msvcrt
 import random
+import time
 
 MAP_SIZE = int(input("Enter the map size you want: "))
 
@@ -15,12 +16,11 @@ EMPTY = '-'
 
 player_position = [0, 0]
 
-key_position = [random.choice(range(MAP_SIZE)), random.choice(range(MAP_SIZE))]
-door_position = [random.choice(range(MAP_SIZE)), random.choice(range(MAP_SIZE))]
-
 playing = True
 key_collected = False
 message = ""
+start_time = 0
+end_time = 0
 
 def initialize_map():
     game_map = [[EMPTY] * MAP_SIZE for _ in range(MAP_SIZE)]
@@ -36,12 +36,12 @@ def initialize_map():
         game_map[key_row][key_col] = key['symbol']
         key['collected'] = False
 
-    while True:
+    door_row = random.randint(0, MAP_SIZE - 1)
+    door_col = random.randint(0, MAP_SIZE - 1)
+    while (door_row == player_position[0] and door_col == player_position[1]) or game_map[door_row][door_col] != EMPTY:
         door_row = random.randint(0, MAP_SIZE - 1)
         door_col = random.randint(0, MAP_SIZE - 1)
-        if (door_row != player_position[0] or door_col != player_position[1]) and game_map[door_row][door_col] == EMPTY:
-            break
-
+    
     game_map[door_row][door_col] = DOOR
 
     return game_map
@@ -66,6 +66,8 @@ def draw_map(game_map):
     print(message)
 
     if all(key['collected'] for key in KEYS if key['order'] == 1) and all(key['collected'] for key in KEYS if key['order'] == 2) and all(key['collected'] for key in KEYS if key['order'] == 3):
+        global end_time
+        end_time = time.time()
         playing = False
         draw_game_won()
 
@@ -82,6 +84,7 @@ def draw_game_won():
     clear_screen()
     print("=== CONGRATULATIONS! ===")
     print("You have successfully escaped!")
+    print(f"Time taken: {round(end_time - start_time, 2)} seconds")
     print()
     playing = False
     message = ""
@@ -107,26 +110,33 @@ def move_player(move, game_map):
             key_symbol = next_cell
             key_order = next(key['order'] for key in KEYS if key['symbol'] == key_symbol)
 
-            if key_order == 1 or (key_order - 1 in [collected_key['order'] for collected_key in KEYS if collected_key['collected']]):
-                game_map[next_position[0]][next_position[1]] = EMPTY
-                key_collected = True
+            if key_order == 1:
+                if all(key['collected'] for key in KEYS if key['order'] == 1):
+                    game_map[next_position[0]][next_position[1]] = EMPTY
+                    key_collected = True
 
-                for key in KEYS:
-                    if key['symbol'] == key_symbol:
-                        key['collected'] = True
-                        break
+                    for key in KEYS:
+                        if key['symbol'] == key_symbol:
+                            key['collected'] = True
+                            break
 
-                game_map[player_position[0]][player_position[1]] = EMPTY
-                player_position = next_position
-                game_map[player_position[0]][player_position[1]] = PLAYER
-                message = f"You have acquired key {key_symbol}!"
+                    game_map[player_position[0]][player_position[1]] = EMPTY
+                    player_position = next_position
+                    game_map[player_position[0]][player_position[1]] = PLAYER
+                    message = f"You have acquired key {key_symbol}!"
 
-                if all(key['collected'] for key in KEYS if key['order'] == 1) and all(key['collected'] for key in KEYS if key['order'] == 2) and all(key['collected'] for key in KEYS if key['order'] == 3):
-                    playing = False
-                    draw_game_won()
+                    if all(key['collected'] for key in KEYS):
+                        playing = False
+                        draw_game_won()
+                else:
+                    message = "You must collect the keys in order"
+            else:
+                message = "You must collect the keys in order"
 
         elif next_cell == DOOR:
             if all(key['collected'] for key in KEYS):
+                global end_time
+                end_time = time.time()
                 playing = False
                 draw_game_won()
             else:
@@ -156,6 +166,8 @@ while playing:
 
     if move == 'Q':
         break
+    if start_time == 0:
+        start_time = time.time()
     move_player(move, game_map)
 
 draw_game_over()
