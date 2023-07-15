@@ -14,6 +14,6 @@ def fibonacci_sequence(n):
 n = int(input("Input a positive number: "))
 
 fibonacci_numbers = fibonacci_sequence(n)
-print(f"First {n} Fibonacci number(s):", end=" ")
+print(f"First {n} Fibonacci number(s):")
 for number in fibonacci_numbers:
     print(number, end=" ")

@@ -14,12 +14,9 @@ def quadratic_equation(a,b,c):
 
 a = int(input("Input a: "))
 
-condition = True
-while condition == True:
-    if a == 0:
-        a = int(input("a cannot be 0: "))
-    else:
-        condition =False
+
+while a ==0:
+    a = int(input("a cannot be 0: "))
         
 b = int(input("Input b: "))
 c = int(input("Input c: "))
